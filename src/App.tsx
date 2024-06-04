@@ -1,10 +1,10 @@
-import { Button } from "./components/ui/button";
+import Routers from "./routes/Routers";
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world! <Button variant="destructive">Click me</Button>
-    </h1>
+    <div className="min-h-[100vh] bg-gray-200">
+      <Routers />
+    </div>
   );
 }
 
