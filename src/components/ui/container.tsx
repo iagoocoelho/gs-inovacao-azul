@@ -6,8 +6,10 @@ type Props = {
 
 export const Container: FC<Props> = ({ children }) => {
   return (
-    <div className="flex bg-gray-200 px-2 py-3 justify-center min-h-full">
-      <div className="max-w-[960px] w-full">{children}</div>
+    <div className="flex justify-center min-h-[80vh] p-12 m-8 rounded-2xl backdrop-blur-md backdrop-brightness-75">
+      <div className="max-w-[960px] w-full rounded">
+        {children}
+      </div>
     </div>
   );
 };

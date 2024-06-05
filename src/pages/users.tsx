@@ -49,7 +49,7 @@ const UserForm = () => {
       <Header />
 
       <Container>
-        <h1 className="text-3xl font-bold pb-4">Cadastro Usuário</h1>
+        <h1 className="text-3xl font-bold pb-4 text-white">Cadastro Usuário</h1>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
