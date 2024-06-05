@@ -143,7 +143,7 @@ const RepairEquipment = () => {
       <Header />
 
       <Container>
-        <h1 className="text-3xl font-bold text-white">Equipamento {id}</h1>
+        <h1 className="text-3xl font-bold text-white text-center">Manutenção</h1>
 
         <div className="mt-8">
           <Form {...form}>
@@ -259,7 +259,7 @@ const RepairEquipment = () => {
                   </Button>
                 )}
 
-                <Button type="submit">Enviar</Button>
+                <Button type="submit" variant='seaBtn'>Enviar</Button>
               </div>
             </form>
           </Form>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { FC } from "react";
+import icon from "@/assets/icon_white.svg";
 
 export const Header: FC = () => {
   return (
@@ -10,14 +11,14 @@ export const Header: FC = () => {
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
           to="/"
-          className="flex items-center gap-2 text-lg font-semibold md:text-base"
+          className="flex items-center gap-2 text-lg font-semibold md:text-base hover:opacity-70 opacity-100 transition-opacity text-white"
         >
           <Package2 className="h-6 w-6" />
           <span>Home</span>
         </Link>
         <Link
           to="/user"
-          className="text-muted-foreground transition-colors hover:text-foreground"
+          className="text-white transition-opacity hover:opacity-70 opacity-100"
         >
           Cadastro Usuário
         </Link>
@@ -25,6 +26,10 @@ export const Header: FC = () => {
 
       {/* MOBILE MENU */}
       <Sheet>
+        <div className="text-white font-semibold text-2xl flex space-x-4">
+          <img src={icon} alt="" />
+          <h1>EcoDrain</h1>
+        </div>
         <SheetTrigger asChild>
           <Button
             variant="ghost"
