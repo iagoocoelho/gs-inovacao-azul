@@ -23,10 +23,17 @@ export const Header: FC = () => {
         </Link>
 
         <Link
-          to="/rewards"
+          to="/resgates"
           className="text-muted-foreground hover:text-foreground"
         >
           Resgate de benefícios
+        </Link>
+
+        <Link
+          to="/equipamentos"
+          className="text-muted-foreground hover:text-foreground"
+        >
+          Meus Equipamentos
         </Link>
       </nav>
 
@@ -56,10 +63,17 @@ export const Header: FC = () => {
               <span>Home</span>
             </Link>
             <Link
-              to="/rewards"
+              to="/resgates"
               className="text-muted-foreground hover:text-foreground"
             >
               Resgate de benefícios
+            </Link>
+
+            <Link
+              to="/equipamentos"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Meus Equipamentos
             </Link>
           </nav>
         </SheetContent>

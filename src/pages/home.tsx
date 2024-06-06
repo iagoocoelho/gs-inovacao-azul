@@ -15,15 +15,15 @@ const Home = () => {
             The future is now!
           </h1>
 
-          <img src={qrcode} alt="" className="w-[130px]" />
+          <img src={qrcode} alt="" className="w-[130px] rounded-sm" />
 
           <div className="flex flex-col items-center">
-            <p className="text-white font-semibold text-2xl text-center">
+            <p className="text-white font-semibold text-xl text-center">
               Cadastre agora um equipamento EcoDrain e faça sua parte para a
               economia azul!
             </p>
             <Link
-              to="/equipment/register"
+              to="/equipamento/registro"
               className="text-white transition-opacity hover:opacity-70 opacity-100"
             >
               <Button variant="link" className="underline text-blue-400">
