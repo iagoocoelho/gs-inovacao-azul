@@ -1,12 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Header } from "@/components/header";
-
 import { Container } from "@/components/ui/container";
-
-import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-
 import { Separator } from "@/components/ui/separator";
 import {
   Carousel,
@@ -32,8 +28,6 @@ import play from "@/assets/play.png";
 import googleplay from "@/assets/googleplay.png";
 
 const Rewards = () => {
-  const { toast } = useToast();
-
   return (
     <>
       <Header />
@@ -43,9 +37,15 @@ const Rewards = () => {
           Resgate de Benefícios
         </h1>
 
-        <div className="mt-8">
+        <div className="mt-8 flex space-x-4 items-center space-y-4 md:space-y-0 md:justify-end flex-col md:flex-row">
+          <div className="flex items-center space-x-2">
+            <p className="text-white text-2xl">Saldo: </p>
+            <Badge variant="outline" className="text-2xl bg-[#5f5fe3] border-[#5f5fe3]">
+              R$ 200,00
+            </Badge>
+          </div>
+
           <Button variant="seaBtn">Meus Resgates</Button>
-          <Badge variant="outline">R$ 0,00</Badge>
         </div>
 
         <div className="pt-4">
@@ -259,7 +259,7 @@ const Rewards = () => {
                   </Card>
                 </div>
               </CarouselItem>
-              
+
               <CarouselItem className="pl-1 md:basis-1/2 lg:basis-1/3 basis-[80%] min-w-[200px] sm:basis-full">
                 <div className="p-1">
                   <Card className="rounded-lg border-none">
