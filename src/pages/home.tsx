@@ -17,11 +17,11 @@ const Home = () => {
 
           <img src={qrcode} alt="" className="w-[130px]" />
 
-          <p className="text-white font-semibold text-2xl text-center">
-            Cadastre agora um equipamento EcoDrain e faça sua parte para a
-            economia azul!
-          </p>
-          <div>
+          <div className="flex flex-col items-center">
+            <p className="text-white font-semibold text-2xl text-center">
+              Cadastre agora um equipamento EcoDrain e faça sua parte para a
+              economia azul!
+            </p>
             <Link
               to="/equipment/register"
               className="text-white transition-opacity hover:opacity-70 opacity-100"
