@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Header } from "@/components/header";
 import { useParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,6 +27,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { GeoapifyGeocoderAutocomplete } from "@geoapify/react-geocoder-autocomplete";
 
 const formSchema = z.object({
   motivo: z.string({ message: "Campo obrigatório" }),
@@ -42,12 +44,9 @@ const RepairEquipment = () => {
   const { id } = useParams();
   const { toast } = useToast();
 
-  const [location, setLocation] = useState<{
-    latitude: null | number;
-    longitude: null | number;
-    hasLocale: boolean;
-  }>({ latitude: null, longitude: null, hasLocale: false });
   const [mesmaLocalizacao, setMesmaLocalizacao] = useState(true);
+  const [localeByAddress, setLocaleByAddress] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,46 +60,56 @@ const RepairEquipment = () => {
 
   const getLocation = () => {
     if (navigator.geolocation) {
+      setIsLoading(true);
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            hasLocale: true,
-          });
-
-          toast({
-            description: (
-              <>
-                <p>Localizamos seu aparelho com sucesso!</p>
-                <p>
-                  Latitude: {position.coords.latitude}, Longitude:{" "}
-                  {position.coords.longitude}
-                </p>
-              </>
-            ),
-            variant: "success",
-          });
+          handleSearchByCoordenate(
+            position.coords.latitude,
+            position.coords.longitude
+          );
         },
         (err) => {
+          setIsLoading(false);
           toast({
             description: err.message,
             variant: "destructive",
           });
-
-          setLocation({
-            latitude: null,
-            longitude: null,
-            hasLocale: false,
-          });
         }
       );
     } else {
+      setIsLoading(false);
       toast({
         description: "Geolocalização não é suportada pelo seu navegador.",
         variant: "destructive",
       });
     }
+  };
+
+  const handleSearchByCoordenate = async (lat: number, lon: number) => {
+    fetch(
+      `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&lang=pt&apiKey=${
+        import.meta.env.VITE_MAPS_API_KEY
+      }`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        toast({
+          description: <p>Localização selecionada com sucesso!</p>,
+          variant: "success",
+        });
+
+        setLocaleByAddress(data.features[0].properties.address_line2);
+        setIsLoading(false);
+      });
+  };
+
+  const onPlaceSelect = (value: any) => {
+    if (value === null) {
+      return setLocaleByAddress("");
+    }
+
+    setLocaleByAddress(value.properties.address_line2);
   };
 
   useEffect(() => {
@@ -113,7 +122,7 @@ const RepairEquipment = () => {
   }, [form.watch("local_tipo")]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!location.hasLocale && !mesmaLocalizacao) {
+    if (!localeByAddress && !mesmaLocalizacao) {
       return toast({
         description:
           "Por favor, nos informe a localização do equipamento clicando no botão 'Obter localização Atual'.",
@@ -121,20 +130,9 @@ const RepairEquipment = () => {
       });
     }
 
-    if (mesmaLocalizacao) {
-      return console.log({
-        ...values,
-        equipmentId: id,
-      });
-    }
-
     console.log({
       ...values,
       equipmentId: id,
-      position: {
-        latitude: location.latitude,
-        longitude: location.longitude,
-      },
     });
   }
 
@@ -143,7 +141,9 @@ const RepairEquipment = () => {
       <Header />
 
       <Container>
-        <h1 className="text-3xl font-bold text-white text-center">Manutenção</h1>
+        <h1 className="text-3xl font-bold text-white text-center">
+          Manutenção
+        </h1>
 
         <div className="mt-8">
           <Form {...form}>
@@ -250,16 +250,42 @@ const RepairEquipment = () => {
                 )}
               />
 
-              <div className="space-x-2 flex justify-end">
-                {!mesmaLocalizacao && (
-                  <Button type="button" variant="outline" onClick={getLocation}>
-                    {location.hasLocale
-                      ? "Redefinir localização"
-                      : "Obter localização Atual"}
-                  </Button>
-                )}
+              {!mesmaLocalizacao && (
+                <>
+                  <FormItem className="input-autocomplete-address">
+                    <FormLabel>Novo local de instalação</FormLabel>
+                    <FormControl>
+                      <GeoapifyGeocoderAutocomplete
+                        placeholder="Digite o endereço"
+                        lang="pt"
+                        placeSelect={onPlaceSelect}
+                        debounceDelay={1000}
+                        value={localeByAddress}
+                      />
+                    </FormControl>
+                  </FormItem>
 
-                <Button type="submit" variant='seaBtn'>Enviar</Button>
+                  <div className="justify-center flex">
+                    <Button
+                      type="button"
+                      variant="seaBtn"
+                      disabled={isLoading}
+                      onClick={getLocation}
+                    >
+                      {isLoading
+                        ? "Obtendo localização..."
+                        : localeByAddress
+                        ? "Redefinir localização"
+                        : "Obter localização Atual"}
+                    </Button>
+                  </div>
+                </>
+              )}
+
+              <div className="space-x-2 flex justify-end">
+                <Button type="submit" variant="seaBtn">
+                  Enviar
+                </Button>
               </div>
             </form>
           </Form>

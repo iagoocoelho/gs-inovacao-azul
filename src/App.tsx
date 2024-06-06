@@ -1,15 +1,16 @@
 import Routers from "./routes/Routers";
 import { Toaster } from "@/components/ui/toaster";
-
+import '@geoapify/geocoder-autocomplete/styles/minimal.css';
 import "./index.css";
+
+
 
 function App() {
   return (
     <>
-      <div className="min-h-[100vh] sea">
+      <div className="min-h-[100vh] sea flex flex-col">
         <Routers />
         <Toaster />
-        {/* <div className="min-w-[100vw] min-h-[100vh] absolute top-0 pointer-events-none"></div> */}
       </div>
     </>
   );

@@ -51,7 +51,29 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .input-autocomplete-address {
+    background: transparent;
+  }
+
+  .input-autocomplete-address .geocoder-container {
+    background: transparent;
+    border-bottom: 1px solid white;
+  }
+
+  .input-autocomplete-address .geocoder-container .geoapify-close-button {
+    color: white;
+  }
+
+  .input-autocomplete-address .geocoder-container .geoapify-autocomplete-input {
+    background: transparent;
+    border: none;
+    color: white;
   }
 }

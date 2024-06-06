@@ -7,8 +7,13 @@ import icon from "@/assets/icon_white.svg";
 
 export const Header: FC = () => {
   return (
-    <header className="sticky top-0 flex h-16 items-center gap-4 border-b px-4 md:px-6 bg-transparent border-none">
+    <header className="sticky top-0 flex h-16 items-center gap-4 border-b px-4 md:px-6 bg-transparent border-none md:z-10">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+        <div className="text-white font-semibold text-2xl flex space-x-4">
+          <img src={icon} alt="" />
+          <h1>EcoDrain</h1>
+        </div>
+
         <Link
           to="/"
           className="flex items-center gap-2 text-lg font-semibold md:text-base hover:opacity-70 opacity-100 transition-opacity text-white"
@@ -26,7 +31,7 @@ export const Header: FC = () => {
 
       {/* MOBILE MENU */}
       <Sheet>
-        <div className="text-white font-semibold text-2xl flex space-x-4">
+        <div className="text-white font-semibold text-2xl flex space-x-4 md:hidden">
           <img src={icon} alt="" />
           <h1>EcoDrain</h1>
         </div>
@@ -34,7 +39,7 @@ export const Header: FC = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="shrink-0 md:hidden right-0 absolute mr-4"
+            className="shrink-0 md:hidden right-0 absolute mr-4 z-10"
           >
             <Menu className="h-7 w-7 text-white" />
             <span className="sr-only">Toggle navigation menu</span>

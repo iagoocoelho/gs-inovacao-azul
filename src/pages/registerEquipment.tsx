@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Header } from "@/components/header";
 import { useParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import {  useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -25,6 +26,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { GeoapifyGeocoderAutocomplete } from "@geoapify/react-geocoder-autocomplete";
 
 const formSchema = z.object({
   tipo_agua: z
@@ -36,13 +38,9 @@ const formSchema = z.object({
 const RegisterEquipment = () => {
   const { id } = useParams();
   const { toast } = useToast();
-
-  const [location, setLocation] = useState<{
-    latitude: null | number;
-    longitude: null | number;
-    hasLocale: boolean;
-  }>({ latitude: null, longitude: null, hasLocale: false });
   const [vidaUtil, setVidaUtil] = useState(0);
+  const [localeByAddress, setLocaleByAddress] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,46 +52,48 @@ const RegisterEquipment = () => {
 
   const getLocation = () => {
     if (navigator.geolocation) {
+      setIsLoading(true);
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            hasLocale: true,
-          });
-
-          toast({
-            description: (
-              <>
-                <p>Localizamos seu aparelho com sucesso!</p>
-                <p>
-                  Latitude: {position.coords.latitude}, Longitude:{" "}
-                  {position.coords.longitude}
-                </p>
-              </>
-            ),
-            variant: "success",
-          });
+          handleSearchByCoordenate(
+            position.coords.latitude,
+            position.coords.longitude
+          );
         },
         (err) => {
+          setIsLoading(false);
           toast({
             description: err.message,
             variant: "destructive",
           });
-
-          setLocation({
-            latitude: null,
-            longitude: null,
-            hasLocale: false,
-          });
         }
       );
     } else {
+      setIsLoading(false);
       toast({
         description: "Geolocalização não é suportada pelo seu navegador.",
         variant: "destructive",
       });
     }
+  };
+
+  const handleSearchByCoordenate = async (lat: number, lon: number) => {
+    fetch(
+      `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&lang=pt&apiKey=${
+        import.meta.env.VITE_MAPS_API_KEY
+      }`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        toast({
+          description: <p>Localização selecionada com sucesso!</p>,
+          variant: "success",
+        });
+
+        setLocaleByAddress(data.features[0].properties.address_line2);
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -106,10 +106,9 @@ const RegisterEquipment = () => {
   }, [form.watch("tipo_agua")]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!location.hasLocale) {
+    if (!localeByAddress) {
       return toast({
-        description:
-          "Por favor, nos informe a localização do equipamento clicando no botão 'Obter localização Atual'.",
+        description: "Por favor, nos informe a localização do equipamento.",
         variant: "destructive",
       });
     }
@@ -117,19 +116,25 @@ const RegisterEquipment = () => {
     console.log({
       ...values,
       equipmentId: id,
-      position: {
-        latitude: location.latitude,
-        longitude: location.longitude,
-      },
     });
   }
+
+  const onPlaceSelect = (value: any) => {
+    if (value === null) {
+      return setLocaleByAddress("");
+    }
+
+    setLocaleByAddress(value.properties.address_line2);
+  };
 
   return (
     <>
       <Header />
 
       <Container>
-        <h1 className="text-3xl font-bold text-white text-center">Manutenção</h1>
+        <h1 className="text-3xl font-bold text-white text-center">
+          Cadastro
+        </h1>
 
         <div className="mt-8">
           <Form {...form}>
@@ -187,14 +192,38 @@ const RegisterEquipment = () => {
                 )}
               />
 
-              <div className="space-x-2 flex justify-end">
-                <Button type="button" variant="outline" onClick={getLocation}>
-                  {location.hasLocale
+              <FormItem className="input-autocomplete-address">
+                <FormLabel>Local de instalação</FormLabel>
+                <FormControl>
+                  <GeoapifyGeocoderAutocomplete
+                    placeholder="Digite o endereço"
+                    lang="pt"
+                    placeSelect={onPlaceSelect}
+                    debounceDelay={1000}
+                    value={localeByAddress}
+                  />
+                </FormControl>
+              </FormItem>
+
+              <div className="justify-center flex">
+                <Button
+                  type="button"
+                  variant="seaBtn"
+                  disabled={isLoading}
+                  onClick={getLocation}
+                >
+                  {isLoading
+                    ? "Obtendo localização..."
+                    : localeByAddress
                     ? "Redefinir localização"
                     : "Obter localização Atual"}
                 </Button>
+              </div>
 
-                <Button type="submit">Enviar</Button>
+              <div className="space-x-2 flex justify-end">
+                <Button type="submit" variant="seaBtn">
+                  Enviar
+                </Button>
               </div>
             </form>
           </Form>
