@@ -1,6 +1,8 @@
 import { Header } from "@/components/header";
 import { Container } from "@/components/ui/container";
 import qrcode from "@/assets/qrcode.png";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -19,6 +21,16 @@ const Home = () => {
             Cadastre agora um equipamento EcoDrain e faça sua parte para a
             economia azul!
           </p>
+          <div>
+            <Link
+              to="/equipment/register"
+              className="text-white transition-opacity hover:opacity-70 opacity-100"
+            >
+              <Button variant="link" className="underline text-blue-400">
+                Cadastrar equipamento
+              </Button>
+            </Link>
+          </div>
         </div>
       </Container>
     </>
