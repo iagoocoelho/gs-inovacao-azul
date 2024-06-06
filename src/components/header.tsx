@@ -21,11 +21,12 @@ export const Header: FC = () => {
           <Package2 className="h-6 w-6" />
           <span>Home</span>
         </Link>
+
         <Link
-          to="/user"
-          className="text-white transition-opacity hover:opacity-70 opacity-100"
+          to="/rewards"
+          className="text-muted-foreground hover:text-foreground"
         >
-          Cadastro Usuário
+          Resgate de benefícios
         </Link>
       </nav>
 
@@ -42,7 +43,7 @@ export const Header: FC = () => {
             className="shrink-0 md:hidden right-0 absolute mr-4 z-10"
           >
             <Menu className="h-7 w-7 text-white" />
-            <span className="sr-only">Toggle navigation menu</span>
+            <span className="sr-only">Abrir menu</span>
           </Button>
         </SheetTrigger>
         <SheetContent side="right">
@@ -55,10 +56,10 @@ export const Header: FC = () => {
               <span>Home</span>
             </Link>
             <Link
-              to="/user"
+              to="/rewards"
               className="text-muted-foreground hover:text-foreground"
             >
-              Cadastro Usuário
+              Resgate de benefícios
             </Link>
           </nav>
         </SheetContent>

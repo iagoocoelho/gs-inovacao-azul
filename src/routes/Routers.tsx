@@ -2,7 +2,7 @@
 import Home from "@/pages/home";
 import RegisterEquipment from "@/pages/registerEquipment";
 import RepairEquipment from "@/pages/repairEquipment";
-// import UserForm from "@/pages/users";
+import Rewards from "@/pages/rewards";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 const Routers = () => {
@@ -12,7 +12,7 @@ const Routers = () => {
         <Route path={"/"} element={<Home />} />
         <Route path={"/equipment/register"} element={<RegisterEquipment />} />
         <Route path={"/equipment/repair/:id"} element={<RepairEquipment />} />
-        {/* <Route path={"/user"} element={<UserForm />} /> */}
+        <Route path={"/rewards"} element={<Rewards />} />
         <Route path={"/*"} element={<Navigate to="/" />} />
       </Routes>
     </>
