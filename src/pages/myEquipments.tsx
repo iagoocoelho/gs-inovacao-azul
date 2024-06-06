@@ -1,5 +1,4 @@
 import { Header } from "@/components/header";
-import { Container } from "@/components/ui/container";
 import map from "@/assets/map.png";
 import map_app from "@/assets/map_app.png";
 
