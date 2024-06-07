@@ -24,14 +24,14 @@ export const Header: FC = () => {
 
         <Link
           to="/resgates"
-          className="text-muted-foreground hover:text-foreground"
+          className="flex items-center gap-2 text-lg font-semibold md:text-base hover:opacity-70 opacity-100 transition-opacity text-white"
         >
           Resgate de benefícios
         </Link>
 
         <Link
           to="/equipamentos"
-          className="text-muted-foreground hover:text-foreground"
+          className="flex items-center gap-2 text-lg font-semibold md:text-base hover:opacity-70 opacity-100 transition-opacity text-white"
         >
           Meus Equipamentos
         </Link>

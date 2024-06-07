@@ -1,8 +1,11 @@
 import { Header } from "@/components/header";
 import map from "@/assets/map.png";
 import map_app from "@/assets/map_app.png";
+import { useNavigate } from "react-router-dom";
 
 const MyEquipments = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Header />
@@ -17,8 +20,30 @@ const MyEquipments = () => {
           </p>
         </div>
 
-        <div>
-          <img src={map_app} alt="" className="rounded-sm" />
+        <div className="flex justify-center items-center">
+          <button
+            onClick={() => {
+              navigate("/equipamento/reparo/1");
+            }}
+          >
+            <img
+              src={map_app}
+              alt=""
+              className="rounded-sm md:hidden max-w-[260px]"
+            />
+          </button>
+
+          <button
+            onClick={() => {
+              navigate("/equipamento/reparo/1");
+            }}
+          >
+            <img
+              src={map}
+              alt=""
+              className="rounded-sm hidden md:block max-w-[1200px] h-auto"
+            />
+          </button>
         </div>
       </div>
     </>

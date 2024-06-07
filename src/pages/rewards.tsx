@@ -40,7 +40,10 @@ const Rewards = () => {
         <div className="mt-8 flex space-x-4 items-center space-y-4 md:space-y-0 md:justify-end flex-col md:flex-row">
           <div className="flex items-center space-x-2">
             <p className="text-white text-2xl">Saldo: </p>
-            <Badge variant="outline" className="text-2xl bg-[#5f5fe3] border-[#5f5fe3]">
+            <Badge
+              variant="outline"
+              className="text-2xl bg-[#5f5fe3] border-[#5f5fe3]"
+            >
               R$ 200,00
             </Badge>
           </div>
@@ -117,7 +120,14 @@ const Rewards = () => {
 
         <div>
           <h2 className="text-white font-bold">Desconto em marcas</h2>
-          <Carousel className="w-full max-w-sm md:max-w-none">
+          <Carousel
+            plugins={[
+              Autoplay({
+                delay: 3500,
+              }),
+            ]}
+            className="w-full max-w-sm md:max-w-none"
+          >
             <CarouselContent className="-ml-1">
               <CarouselItem className="pl-1 md:basis-1/2 lg:basis-1/3 basis-[50%] sm:basis-full">
                 <div className="p-1">
@@ -197,11 +207,11 @@ const Rewards = () => {
           <h2 className="text-white font-bold pb-3">Gift Cards</h2>
           <Carousel
             className="w-full max-w-sm md:max-w-none"
-            // plugins={[
-            //   Autoplay({
-            //     delay: 3000,
-            //   }),
-            // ]}
+            plugins={[
+              Autoplay({
+                delay: 2500,
+              }),
+            ]}
           >
             <CarouselContent className="-ml-1">
               <CarouselItem className="pl-1 md:basis-1/2 lg:basis-1/3 basis-[80%] min-w-[200px] sm:basis-full">

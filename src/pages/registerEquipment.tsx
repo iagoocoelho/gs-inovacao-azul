@@ -2,7 +2,7 @@
 import { Header } from "@/components/header";
 import { useParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {  useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -27,12 +27,14 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { GeoapifyGeocoderAutocomplete } from "@geoapify/react-geocoder-autocomplete";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   tipo_agua: z
     .string()
     .refine((value) => value !== "", { message: "Campo obrigatório" }),
   observacao: z.string().optional(),
+  apelido: z.string(),
 });
 
 const RegisterEquipment = () => {
@@ -41,6 +43,7 @@ const RegisterEquipment = () => {
   const [vidaUtil, setVidaUtil] = useState(0);
   const [localeByAddress, setLocaleByAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -117,6 +120,13 @@ const RegisterEquipment = () => {
       ...values,
       equipmentId: id,
     });
+
+    toast({
+      description: "Cadastro realizado com sucesso!",
+      variant: "success",
+    });
+
+    navigate("/equipamentos");
   }
 
   const onPlaceSelect = (value: any) => {
@@ -132,13 +142,28 @@ const RegisterEquipment = () => {
       <Header />
 
       <Container>
-        <h1 className="text-3xl font-bold text-white text-center">
-          Cadastro
-        </h1>
+        <h1 className="text-3xl font-bold text-white text-center">Cadastro</h1>
 
         <div className="mt-8">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="apelido"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Apelido do Equipamento</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Ex: Equipamento Rio Ipiranga"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="tipo_agua"
